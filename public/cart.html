@@ -12,11 +12,13 @@
 <nav class="navbar">
   <div class="logo">Ze<span>sto</span></div>
 
-  <ul class="nav-links">
+<ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="menu.html">Menu</a></li>
-    <li><a href="#" class="active">Cart</a></li>
-  </ul>
+    <li><a href="orders.html">Orders</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="cart.html" class="active">Cart</a></li>
+</ul>
 </nav>
 
 <div class="menu-hero">
@@ -173,16 +175,14 @@ async function checkout(){
 
     });
 
-  if(response.ok){
+    if(response.ok){
 
-    alert(
-      "🎉 Order Placed Successfully"
-    );
+        alert("🎉 Order Placed Successfully");
 
-    localStorage.removeItem("cart");
+        localStorage.removeItem("cart");
 
-    window.location.reload();
-  }
+        window.location.href = "orders.html";
+    }
 }
 
 loadCart();

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders - Zesto</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">Ze<span>sto</span></div>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="orders.html" class="active">Orders</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="cart.html">Cart</a></li>
+  </ul>
+</nav>
+
+<div class="menu-hero">
+  <h1>My Orders 📦</h1>
+  <p>Track all your food orders</p>
+</div>
+
+<section class="section">
+  <div id="ordersContainer"></div>
+</section>
+
+<script>
+
+async function loadOrders() {
+
+  try {
+
+    const response = await fetch("/api/orders");
+
+    const orders = await response.json();
+
+    const container =
+      document.getElementById("ordersContainer");
+
+    if (orders.length === 0) {
+
+      container.innerHTML = `
+        <div class="cart-empty">
+          <span class="cart-empty-emoji">📦</span>
+          <p>No orders found</p>
+        </div>
+      `;
+
+      return;
+    }
+
+    container.innerHTML = "";
+
+    orders.reverse().forEach(order => {
+
+      container.innerHTML += `
+
+        <div class="menu-card" style="margin-bottom:20px;">
+
+          <div class="menu-body">
+
+            <h3>👤 ${order.customerName}</h3>
+
+            <p>
+              <strong>Status:</strong>
+              ${order.status}
+            </p>
+
+            <p>
+              <strong>Total:</strong>
+              ₹${order.totalPrice}
+            </p>
+
+            <p>
+              <strong>Ordered On:</strong>
+              ${new Date(order.createdAt).toLocaleString()}
+            </p>
+
+            <hr style="margin:10px 0;">
+
+            <h4>🍽 Ordered Items</h4>
+
+            <ul>
+
+              ${order.items.map(item => `
+
+                <li style="margin-bottom:6px;">
+
+                  ${item.name}
+                  -
+                  ₹${item.price}
+                  ×
+                  ${item.quantity}
+
+                </li>
+
+              `).join("")}
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      `;
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById(
+      "ordersContainer"
+    ).innerHTML = `
+      <h3>Error loading orders</h3>
+    `;
+  }
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>

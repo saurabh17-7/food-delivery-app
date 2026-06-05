@@ -11,12 +11,12 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">Ze<span>sto</span></div>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="menu.html" class="active">Menu</a></li>
-    <li><a href="#">Orders</a></li>
-    <li><a href="#">About</a></li>
-  </ul>
+<ul class="nav-links">
+  <li><a href="index.html" class="active">Home</a></li>
+  <li><a href="menu.html">Menu</a></li>
+  <li><a href="orders.html">Orders</a></li>
+  <li><a href="about.html">About</a></li>
+</ul>
   <div class="nav-right">
     <button class="cart-btn" id="openCart">
       🛒 Cart <span class="cart-count" id="cartCount">0</span>
@@ -93,7 +93,11 @@
       <span>Total</span>
       <span id="cartTotal">₹0</span>
     </div>
-    <button class="checkout-btn">Proceed to checkout</button>
+    <button
+  class="checkout-btn"
+  onclick="checkout()">
+  Proceed to checkout
+</button>
   </div>
 </div>
 
