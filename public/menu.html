@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu — Zesto</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">Ze<span>sto</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+    <li><a href="#">Orders</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" id="openCart">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="btn-primary">Sign in</button>
+  </div>
+</nav>
+
+<!-- MENU HERO -->
+<div class="menu-hero">
+  <h1>Our Menu 🍽️</h1>
+  <p>Fresh, flavourful dishes made with love — delivered to your door</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <span class="search-icon">🔍</span>
+  <input type="text" id="searchInput" placeholder="Search dishes..." aria-label="Search dishes"/>
+  <button class="search-submit" onclick="filterMenu()">Search</button>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="section-sm">
+  <div class="cats" id="menuCats">
+    <div class="cat active" data-cat="all"><span class="cat-emoji">🍽️</span> All</div>
+    <div class="cat" data-cat="pizza"><span class="cat-emoji">🍕</span> Pizza</div>
+    <div class="cat" data-cat="burger"><span class="cat-emoji">🍔</span> Burgers</div>
+    <div class="cat" data-cat="pasta"><span class="cat-emoji">🍝</span> Pasta</div>
+    <div class="cat" data-cat="mexican"><span class="cat-emoji">🌮</span> Mexican</div>
+    <div class="cat" data-cat="chinese"><span class="cat-emoji">🍱</span> Chinese</div>
+    <div class="cat" data-cat="noodles"><span class="cat-emoji">🍜</span> Noodles</div>
+    <div class="cat" data-cat="desserts"><span class="cat-emoji">🧁</span> Desserts</div>
+  </div>
+</div>
+
+<!-- MENU ITEMS -->
+<div class="section" style="padding-top:0.5rem;">
+  <div class="section-header">
+    <h2 class="section-title" id="menuSectionTitle">All items</h2>
+    <span id="menuCount" style="font-size:13px; color:var(--text-muted);"></span>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+  <p id="noResults" style="display:none; text-align:center; color:var(--text-muted); padding:3rem 0; font-size:16px;">
+    😕 No dishes found. Try a different search.
+  </p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Zesto · All rights reserved</span>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Your cart</h2>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer">
+    <div class="cart-empty">
+      <span class="cart-empty-emoji">🛒</span>
+      <p>Your cart is empty</p>
+      <p style="font-size:13px; margin-top:6px;">Add items from the menu</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">₹0</span>
+    </div>
+    <button class="checkout-btn">Proceed to checkout</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="cart.js"></script>
+<script>
+  const allItems = [
+    { name: 'Margherita Pizza',    emoji: '🍕', price: 299, cat: 'pizza',   rating: 4.8, time: '25 min', desc: 'Classic tomato, mozzarella & fresh basil' },
+    { name: 'Pepperoni Pizza',     emoji: '🍕', price: 349, cat: 'pizza',   rating: 4.7, time: '25 min', desc: 'Loaded with spicy pepperoni slices' },
+    { name: 'BBQ Chicken Pizza',   emoji: '🍕', price: 399, cat: 'pizza',   rating: 4.9, time: '30 min', desc: 'Smoky BBQ base with grilled chicken' },
+    { name: 'Classic Burger',      emoji: '🍔', price: 149, cat: 'burger',  rating: 4.6, time: '20 min', desc: 'Juicy patty, lettuce, cheese & sauce' },
+    { name: 'Double Patty Burger', emoji: '🍔', price: 229, cat: 'burger',  rating: 4.8, time: '22 min', desc: 'Double the beef, double the flavour' },
+    { name: 'Veggie Burger',       emoji: '🍔', price: 169, cat: 'burger',  rating: 4.5, time: '18 min', desc: 'Crispy veggie patty with house sauce' },
+    { name: 'Creamy Pasta',        emoji: '🍝', price: 199, cat: 'pasta',   rating: 4.7, time: '30 min', desc: 'Penne in rich white cream sauce' },
+    { name: 'Pesto Pasta',         emoji: '🍝', price: 219, cat: 'pasta',   rating: 4.6, time: '28 min', desc: 'Fusilli with basil pesto & parmesan' },
+    { name: 'Arrabbiata Pasta',    emoji: '🍝', price: 189, cat: 'pasta',   rating: 4.5, time: '25 min', desc: 'Spicy tomato sauce pasta' },
+    { name: 'Tacos Platter',       emoji: '🌮', price: 249, cat: 'mexican', rating: 4.8, time: '22 min', desc: '3 loaded tacos with salsa & guac' },
+    { name: 'Burrito Bowl',        emoji: '🌯', price: 279, cat: 'mexican', rating: 4.7, time: '25 min', desc: 'Rice, beans, corn, cheese & chicken' },
+    { name: 'Nachos Platter',      emoji: '🫕', price: 199, cat: 'mexican', rating: 4.6, time: '15 min', desc: 'Crispy nachos with cheese & jalapeños' },
+    { name: 'Fried Rice',          emoji: '🍱', price: 179, cat: 'chinese', rating: 4.5, time: '20 min', desc: 'Wok-tossed rice with veggies & soy' },
+    { name: 'Manchurian',          emoji: '🥡', price: 189, cat: 'chinese', rating: 4.7, time: '22 min', desc: 'Crispy balls in tangy Manchurian gravy' },
+    { name: 'Hakka Noodles',       emoji: '🍜', price: 159, cat: 'noodles', rating: 4.6, time: '18 min', desc: 'Tossed noodles with veggies & sauce' },
+    { name: 'Ramen Bowl',          emoji: '🍜', price: 229, cat: 'noodles', rating: 4.8, time: '25 min', desc: 'Rich broth, soft noodles & soft egg' },
+    { name: 'Chocolate Lava Cake', emoji: '🎂', price: 129, cat: 'desserts',rating: 4.9, time: '15 min', desc: 'Warm chocolate cake with molten center' },
+    { name: 'Gulab Jamun',         emoji: '🍮', price: 99,  cat: 'desserts',rating: 4.8, time: '10 min', desc: 'Soft milk dumplings in rose syrup' },
+    { name: 'Ice Cream Sundae',    emoji: '🍨', price: 149, cat: 'desserts',rating: 4.7, time: '10 min', desc: 'Three scoops with toppings & sauce' },
+  ];
+
+  let activeCategory = 'all';
+
+  function renderMenu(items) {
+    const grid = document.getElementById('menuGrid');
+    const noResults = document.getElementById('noResults');
+    const countEl = document.getElementById('menuCount');
+
+    if (items.length === 0) {
+      grid.innerHTML = '';
+      noResults.style.display = 'block';
+      countEl.textContent = '';
+      return;
+    }
+
+    noResults.style.display = 'none';
+    countEl.textContent = items.length + ' items';
+
+    grid.innerHTML = items.map(item => `
+      <div class="menu-card">
+        <div class="menu-img">${item.emoji}</div>
+        <div class="menu-body">
+          <p class="menu-name">${item.name}</p>
+          <p class="menu-desc">${item.desc}</p>
+          <div class="menu-meta">
+            <span class="menu-price">₹${item.price}</span>
+            <div>
+              <div class="menu-rating"><span class="menu-star">★</span> ${item.rating}</div>
+              <div class="menu-time">🕐 ${item.time}</div>
+            </div>
+          </div>
+          <button class="add-btn" onclick="addToCart('${item.name}', ${item.price}, '${item.emoji}'); markAdded(this)">
+            Add to cart
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterMenu() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    let filtered = allItems;
+    if (activeCategory !== 'all') filtered = filtered.filter(i => i.cat === activeCategory);
+    if (query) filtered = filtered.filter(i => i.name.toLowerCase().includes(query) || i.desc.toLowerCase().includes(query));
+    renderMenu(filtered);
+  }
+
+  // Category click
+  document.querySelectorAll('#menuCats .cat').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('#menuCats .cat').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      activeCategory = c.dataset.cat;
+      const title = c.textContent.trim();
+      document.getElementById('menuSectionTitle').textContent = title;
+      document.getElementById('searchInput').value = '';
+      filterMenu();
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('input', filterMenu);
+  document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') filterMenu(); });
+
+  function markAdded(btn) {
+    btn.textContent = 'Added ✓';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = 'Add to cart'; btn.classList.remove('added'); }, 1400);
+  }
+
+  // Check for search query from homepage
+  const params = new URLSearchParams(window.location.search);
+  const searchQ = params.get('search');
+  if (searchQ) {
+    document.getElementById('searchInput').value = searchQ;
+  }
+
+  renderMenu(allItems);
+  if (searchQ) filterMenu();
+</script>
+</body>
+</html>

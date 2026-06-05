@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zesto — Food Delivery</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">Ze<span>sto</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="#">Orders</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" id="openCart">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="btn-primary">Sign in</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">⚡ Fast delivery in 30 min</div>
+    <h1 class="hero-title">Craving something <em>delicious?</em></h1>
+    <p class="hero-sub">Fresh meals from top restaurants in your city, delivered hot to your doorstep.</p>
+    <div class="hero-actions">
+      <a href="menu.html"><button class="btn-primary">Order now</button></a>
+      <a href="menu.html"><button class="btn-ghost">View menu</button></a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Restaurants</div>
+      </div>
+      <div>
+        <div class="stat-num">50k+</div>
+        <div class="stat-label">Happy customers</div>
+      </div>
+      <div>
+        <div class="stat-num">4.8★</div>
+        <div class="stat-label">Average rating</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-food-grid">
+      <div class="hero-food-card" onclick="addToCart('Margherita Pizza', 299, '🍕')">
+        <span class="hero-food-emoji">🍕</span>
+        <p class="hero-food-name">Margherita Pizza</p>
+        <span class="hero-food-price">₹299</span><br>
+        <span class="hero-food-time">25 min</span>
+        <button class="add-circle" aria-label="Add pizza">+</button>
+      </div>
+      <div class="hero-food-card" onclick="addToCart('Classic Burger', 149, '🍔')">
+        <span class="hero-food-emoji">🍔</span>
+        <p class="hero-food-name">Classic Burger</p>
+        <span class="hero-food-price">₹149</span><br>
+        <span class="hero-food-time">20 min</span>
+        <button class="add-circle" aria-label="Add burger">+</button>
+      </div>
+      <div class="hero-food-card" onclick="addToCart('Creamy Pasta', 199, '🍝')">
+        <span class="hero-food-emoji">🍝</span>
+        <p class="hero-food-name">Creamy Pasta</p>
+        <span class="hero-food-price">₹199</span><br>
+        <span class="hero-food-time">30 min</span>
+        <button class="add-circle" aria-label="Add pasta">+</button>
+      </div>
+      <div class="hero-food-card" onclick="addToCart('Tacos Platter', 249, '🌮')">
+        <span class="hero-food-emoji">🌮</span>
+        <p class="hero-food-name">Tacos Platter</p>
+        <span class="hero-food-price">₹249</span><br>
+        <span class="hero-food-time">22 min</span>
+        <button class="add-circle" aria-label="Add tacos">+</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <span class="search-icon">🔍</span>
+  <input type="text" id="searchInput" placeholder="Search for dishes, restaurants..." aria-label="Search food"/>
+  <button class="search-submit" onclick="handleSearch()">Search</button>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section-sm">
+  <div class="section-header">
+    <h2 class="section-title" style="font-size:20px; font-family:'DM Sans',sans-serif; font-weight:500;">Browse by category</h2>
+  </div>
+  <div class="cats" id="catList">
+    <div class="cat active" data-cat="all"><span class="cat-emoji">🍽️</span> All</div>
+    <div class="cat" data-cat="pizza"><span class="cat-emoji">🍕</span> Pizza</div>
+    <div class="cat" data-cat="burger"><span class="cat-emoji">🍔</span> Burgers</div>
+    <div class="cat" data-cat="pasta"><span class="cat-emoji">🍝</span> Pasta</div>
+    <div class="cat" data-cat="mexican"><span class="cat-emoji">🌮</span> Mexican</div>
+    <div class="cat" data-cat="chinese"><span class="cat-emoji">🱺</span> Chinese</div>
+    <div class="cat" data-cat="noodles"><span class="cat-emoji">🍜</span> Noodles</div>
+    <div class="cat" data-cat="desserts"><span class="cat-emoji">🧁</span> Desserts</div>
+  </div>
+</div>
+
+<!-- POPULAR ITEMS -->
+<div class="section" style="padding-top:0.5rem;">
+  <div class="section-header">
+    <h2 class="section-title">Popular right now</h2>
+    <a href="menu.html" class="see-all">See all →</a>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card">
+      <div class="menu-img">🍕</div>
+      <div class="menu-body">
+        <p class="menu-name">Margherita Pizza</p>
+        <p class="menu-desc">Classic tomato, mozzarella & basil</p>
+        <div class="menu-meta">
+          <span class="menu-price">₹299</span>
+          <div>
+            <div class="menu-rating"><span class="menu-star">★</span> 4.8</div>
+            <div class="menu-time">🕐 25 min</div>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addToCart('Margherita Pizza', 299, '🍕'); markAdded(this)">Add to cart</button>
+      </div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-img">🍔</div>
+      <div class="menu-body">
+        <p class="menu-name">Classic Burger</p>
+        <p class="menu-desc">Juicy patty, lettuce, cheese & sauce</p>
+        <div class="menu-meta">
+          <span class="menu-price">₹149</span>
+          <div>
+            <div class="menu-rating"><span class="menu-star">★</span> 4.6</div>
+            <div class="menu-time">🕐 20 min</div>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addToCart('Classic Burger', 149, '🍔'); markAdded(this)">Add to cart</button>
+      </div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-img">🍝</div>
+      <div class="menu-body">
+        <p class="menu-name">Creamy Pasta</p>
+        <p class="menu-desc">Penne in rich white sauce</p>
+        <div class="menu-meta">
+          <span class="menu-price">₹199</span>
+          <div>
+            <div class="menu-rating"><span class="menu-star">★</span> 4.7</div>
+            <div class="menu-time">🕐 30 min</div>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addToCart('Creamy Pasta', 199, '🍝'); markAdded(this)">Add to cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner">
+  <div class="promo-text">
+    <p class="promo-title">50% off your first order!</p>
+    <p class="promo-sub">Fresh food. Fast delivery. Great price.</p>
+    <div class="promo-code">ZESTO50</div>
+    <button class="promo-cta" onclick="window.location.href='menu.html'">Order now</button>
+  </div>
+  <div class="promo-visual">🎉</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Zesto · All rights reserved</span>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Your cart</h2>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer">
+    <div class="cart-empty">
+      <span class="cart-empty-emoji">🛒</span>
+      <p>Your cart is empty</p>
+      <p style="font-size:13px; margin-top:6px;">Add items from the menu</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">₹0</span>
+    </div>
+    <button class="checkout-btn">Proceed to checkout</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="cart.js"></script>
+<script>
+  // Category filter
+  document.querySelectorAll('.cat').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+
+  function handleSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = 'menu.html?search=' + encodeURIComponent(q);
+  }
+  document.getElementById('searchInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') handleSearch();
+  });
+
+  function markAdded(btn) {
+    btn.textContent = 'Added ✓';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = 'Add to cart'; btn.classList.remove('added'); }, 1400);
+  }
+</script>
+</body>
+</html>
