@@ -2,7 +2,7 @@ const express = require("express");
 console.log("orderRoutes loaded");
 const router = express.Router();
 
-const Order = require("../models/Order");
+const Order = require("../models/order");
 
 router.post("/", async (req, res) => {
 
