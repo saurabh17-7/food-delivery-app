@@ -2,11 +2,24 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function addToCart(name, price, emoji) {
 
-    cart.push({
-        name,
-        price,
-        emoji
-    });
+    const existingItem = cart.find(
+        item => item.name === name
+    );
+
+    if (existingItem) {
+
+        existingItem.quantity =
+            (existingItem.quantity || 1) + 1;
+
+    } else {
+
+        cart.push({
+            name,
+            price,
+            emoji,
+            quantity: 1
+        });
+    }
 
     localStorage.setItem(
         "cart",
@@ -79,7 +92,7 @@ function renderCart() {
 
     cart.forEach((item, index) => {
 
-        total += item.price;
+        total += item.price * (item.quantity || 1);;
 
         container.innerHTML += `
             <div class="cart-item">
@@ -93,7 +106,12 @@ function renderCart() {
                         </strong>
 
                         <div>
-                            ₹${item.price}
+                        <div>
+    ₹${item.price} × ${item.quantity || 1}
+</div>
+
+                            
+
                         </div>
                     </div>
 
@@ -193,7 +211,7 @@ async function checkout() {
             items: cart.map(item => ({
                 name: item.name,
                 price: item.price,
-                quantity: 1
+                quantity: item.quantity || 1
             })),
             totalPrice
         };
