@@ -168,7 +168,7 @@ function closeCart() {
 
 async function checkout() {
 
-    alert("Checkout Started");
+    alert("CART.JS CHECKOUT CALLED");
 
     try {
 
