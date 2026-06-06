@@ -11,16 +11,18 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">Ze<span>sto</span></div>
-  <ul class="nav-links">
-    <li><a href="index.html" class="active">Home</a></li>
-    <li><a href="menu.html">Menu</a></li>
-    <li><a href="#">Orders</a></li>
-    <li><a href="#">About</a></li>
-  </ul>
+<ul class="nav-links">
+  <li><a href="index.html" class="active">Home</a></li>
+  <li><a href="menu.html">Menu</a></li>
+  <li><a href="orders.html">Orders</a></li>
+  <li><a href="about.html">About</a></li>
+</ul>
   <div class="nav-right">
-    <button class="cart-btn" id="openCart">
-      🛒 Cart <span class="cart-count" id="cartCount">0</span>
-    </button>
+<a href="cart.html">
+  <button class="cart-btn">
+    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</a>
     <button class="btn-primary">Sign in</button>
   </div>
 </nav>
@@ -52,33 +54,53 @@
   </div>
   <div class="hero-right">
     <div class="hero-food-grid">
-      <div class="hero-food-card" onclick="addToCart('Margherita Pizza', 299, '🍕')">
+      <div class="hero-food-card">
         <span class="hero-food-emoji">🍕</span>
         <p class="hero-food-name">Margherita Pizza</p>
         <span class="hero-food-price">₹299</span><br>
         <span class="hero-food-time">25 min</span>
-        <button class="add-circle" aria-label="Add pizza">+</button>
+        <button
+          class="add-circle"
+          aria-label="Add pizza"
+          onclick="addToCart('Margherita Pizza', 299, '🍕')">
+          +
+        </button>
       </div>
-      <div class="hero-food-card" onclick="addToCart('Classic Burger', 149, '🍔')">
+      <div class="hero-food-card">
         <span class="hero-food-emoji">🍔</span>
         <p class="hero-food-name">Classic Burger</p>
         <span class="hero-food-price">₹149</span><br>
         <span class="hero-food-time">20 min</span>
-        <button class="add-circle" aria-label="Add burger">+</button>
+        <button
+          class="add-circle"
+          aria-label="Add burger"
+          onclick="addToCart('Classic Burger', 149, '🍔')">
+          +
+        </button>
       </div>
-      <div class="hero-food-card" onclick="addToCart('Creamy Pasta', 199, '🍝')">
+      <div class="hero-food-card">
         <span class="hero-food-emoji">🍝</span>
         <p class="hero-food-name">Creamy Pasta</p>
         <span class="hero-food-price">₹199</span><br>
         <span class="hero-food-time">30 min</span>
-        <button class="add-circle" aria-label="Add pasta">+</button>
+        <button
+          class="add-circle"
+          aria-label="Add pasta"
+          onclick="addToCart('Creamy Pasta', 199, '🍝')">
+          +
+        </button>
       </div>
-      <div class="hero-food-card" onclick="addToCart('Tacos Platter', 249, '🌮')">
+      <div class="hero-food-card">
         <span class="hero-food-emoji">🌮</span>
         <p class="hero-food-name">Tacos Platter</p>
         <span class="hero-food-price">₹249</span><br>
         <span class="hero-food-time">22 min</span>
-        <button class="add-circle" aria-label="Add tacos">+</button>
+        <button
+          class="add-circle"
+          aria-label="Add tacos"
+          onclick="addToCart('Tacos Platter', 249, '🌮')">
+          +
+        </button>
       </div>
     </div>
   </div>
@@ -203,14 +225,18 @@
       <span>Total</span>
       <span id="cartTotal">₹0</span>
     </div>
-    <button class="checkout-btn">Proceed to checkout</button>
+    <button
+  class="checkout-btn"
+  onclick="checkout()">
+  Proceed to checkout
+</button>
   </div>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script src="cart.js"></script>
+<script src="cart.js?v=100"></script>
 <script>
   // Category filter
   document.querySelectorAll('.cat').forEach(c => {
