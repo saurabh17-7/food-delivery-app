@@ -168,55 +168,73 @@ function closeCart() {
 
 async function checkout() {
 
-    cart = JSON.parse(
-        localStorage.getItem("cart")
-    ) || [];
+    try {
 
-    if (cart.length === 0) {
-        alert("Cart is empty");
-        return;
-    }
+        cart = JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
 
-    const customerName =
-        prompt("Enter Your Name");
+        if (cart.length === 0) {
+            alert("Cart is empty");
+            return;
+        }
 
-    if (!customerName) return;
+        const customerName =
+            prompt("Enter Your Name");
 
-    const totalPrice =
-        cart.reduce(
-            (sum, item) =>
-                sum + item.price,
-            0
-        );
+        if (!customerName) return;
 
-    const orderData = {
+        const totalPrice =
+            cart.reduce(
+                (sum, item) =>
+                    sum + item.price,
+                0
+            );
 
-        customerName,
+        const orderData = {
 
-        items: cart.map(item => ({
-            name: item.name,
-            price: item.price,
-            quantity: 1
-        })),
+            customerName,
 
-        totalPrice
-    };
+            items: cart.map(item => ({
+                name: item.name,
+                price: item.price,
+                quantity: 1
+            })),
 
-    const response =
-        await fetch("/api/orders", {
+            totalPrice
+        };
 
-            method: "POST",
+        console.log("Sending Order:", orderData);
 
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
+        const response =
+            await fetch("/api/orders", {
 
-            body:
-                JSON.stringify(orderData)
-        });
+                method: "POST",
 
-    if (response.ok) {
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(orderData)
+            });
+
+        console.log("Response Status:", response.status);
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            console.error(errorText);
+
+            alert(
+                "Order Failed. Please try again."
+            );
+
+            return;
+        }
 
         alert(
             "🎉 Order Placed Successfully"
@@ -231,33 +249,16 @@ async function checkout() {
         updateCartCount();
         renderCart();
         closeCart();
+
+    } catch (error) {
+
+        console.error(
+            "Checkout Error:",
+            error
+        );
+
+        alert(
+            "Unable to connect to server. Please try again."
+        );
     }
 }
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        updateCartCount();
-        renderCart();
-
-        const openBtn =
-            document.getElementById(
-                "openCart"
-            );
-
-        if (openBtn) {
-
-            openBtn.addEventListener(
-                "click",
-                (e) => {
-
-                    e.preventDefault();
-
-                    renderCart();
-                    openCart();
-                }
-            );
-        }
-    }
-);
