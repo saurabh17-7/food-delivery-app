@@ -168,97 +168,67 @@ function closeCart() {
 
 async function checkout() {
 
+    alert("Checkout Started");
+
     try {
 
-        cart = JSON.parse(
-            localStorage.getItem("cart")
-        ) || [];
+        cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         if (cart.length === 0) {
             alert("Cart is empty");
             return;
         }
 
-        const customerName =
-            prompt("Enter Your Name");
+        const customerName = prompt("Enter Your Name");
 
         if (!customerName) return;
 
-        const totalPrice =
-            cart.reduce(
-                (sum, item) =>
-                    sum + item.price,
-                0
-            );
+        const totalPrice = cart.reduce(
+            (sum, item) => sum + item.price,
+            0
+        );
 
         const orderData = {
-
             customerName,
-
             items: cart.map(item => ({
                 name: item.name,
                 price: item.price,
                 quantity: 1
             })),
-
             totalPrice
         };
 
-        console.log("Sending Order:", orderData);
+        console.log(orderData);
 
-        const response =
-            await fetch("/api/orders", {
+        const response = await fetch("/api/orders", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(orderData)
+        });
 
-                method: "POST",
+        console.log("Status:", response.status);
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+        if (response.ok) {
 
-                body:
-                    JSON.stringify(orderData)
-            });
+            alert("🎉 Order Placed Successfully");
 
-        console.log("Response Status:", response.status);
+            localStorage.removeItem("cart");
+            cart = [];
 
-        if (!response.ok) {
+            updateCartCount();
+            renderCart();
+            closeCart();
 
-            const errorText =
-                await response.text();
+        } else {
 
-            console.error(errorText);
-
-            alert(
-                "Order Failed. Please try again."
-            );
-
-            return;
+            alert("Order Failed");
         }
-
-        alert(
-            "🎉 Order Placed Successfully"
-        );
-
-        localStorage.removeItem(
-            "cart"
-        );
-
-        cart = [];
-
-        updateCartCount();
-        renderCart();
-        closeCart();
 
     } catch (error) {
 
-        console.error(
-            "Checkout Error:",
-            error
-        );
-
-        alert(
-            "Unable to connect to server. Please try again."
-        );
+        console.error(error);
+        alert("ERROR: " + error.message);
     }
 }
