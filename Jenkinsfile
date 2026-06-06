@@ -5,21 +5,28 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Cloning Repository'
+                git 'https://github.com/saurabh17-7/food-delivery-app.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                sh 'npm install'
+                sh 'docker build -t food-delivery-app .'
             }
         }
 
-        stage('Build') {
+        stage('Deploy Container') {
             steps {
-                echo 'Build Successful'
+                sh '''
+                docker stop food-app || true
+                docker rm food-app || true
+
+                docker run -d \
+                --name food-app \
+                -p 3000:3000 \
+                food-delivery-app
+                '''
             }
         }
-
     }
 }
