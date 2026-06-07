@@ -208,6 +208,9 @@ Deployment is automated through Jenkins CI/CD pipeline.
 
 ---
 
+##Live Demo
+http://3.109.56.86:3000/
+
 ## 📚 Learning Outcomes
 
 Through this project, I gained hands-on experience with:
